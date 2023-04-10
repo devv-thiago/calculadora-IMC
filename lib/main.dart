@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+void main() => runApp(HomePage());
 
 class HomePage extends StatelessWidget {
   TextEditingController pesoController = TextEditingController();
@@ -10,28 +11,59 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Calculadora de IMC'),
+          title: const Center(child: Text('Calculadora de IMC')),
           backgroundColor: Colors.cyan,
         ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.red,
+        body: Padding(
+          padding: const EdgeInsets.only(right: 20, left: 20),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
                 controller: pesoController,
-                decoration: const InputDecoration(label: Text('Peso')),
+                decoration: const InputDecoration(
+                    label: Text('Peso'),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(style: BorderStyle.solid))),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               TextField(
                   controller: alturaController,
-                  decoration: const InputDecoration(label: Text('Altura'))),
-              ElevatedButton(onPressed: () {}, child: const Text('Calcular'))
+                  decoration: const InputDecoration(
+                      label: Text('Altura'),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(style: BorderStyle.solid)))),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                  height: 50,
+                  width: 200,
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Calcular',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      )))
             ],
           ),
         ),
+        bottomNavigationBar:
+            BottomNavigationBar(items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calculate), label: 'Calcular'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.restore_rounded),
+            label: 'Histórico',
+          )
+        ]),
       ),
     );
   }
