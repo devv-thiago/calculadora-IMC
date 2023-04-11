@@ -1,17 +1,18 @@
 import 'dart:math';
 
 class Pessoa {
-  final String nome;
-  final double peso;
-  final double altura;
+  double peso;
+  double altura;
+  static late double imc;
 
-  Pessoa({required this.nome, required this.peso, required this.altura});
+  Pessoa({required this.peso, required this.altura});
 
-  double calcularIMC(double peso, double altura) {
-    return peso / (pow(altura, 2));
+  static double calcularIMC(double peso, double altura) {
+    imc = peso / (pow(altura, 2));
+    return imc;
   }
 
-  String classificaIMC(double IMC) {
+  static String classificaIMC(double IMC) {
     late String resultado;
     if (IMC < 16) {
       resultado = "Magreza Grave";
