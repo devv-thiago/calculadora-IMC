@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
-
+import './database/db.dart';
 import 'models/pessoa.dart';
 
-void main() => runApp(HomePage());
+void main() async {
+  runApp(HomePage());
+}
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   TextEditingController pesoController = TextEditingController();
+
   TextEditingController alturaController = TextEditingController();
+
   late double peso = double.parse(pesoController.text);
   late double altura = double.parse(alturaController.text);
 
-  HomePage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +61,7 @@ class HomePage extends StatelessWidget {
                   width: 200,
                   child: ElevatedButton(
                       onPressed: () {
-                        Pessoa.calcularIMC(peso, altura);
+                        
                       },
                       child: const Text(
                         'Calcular',
