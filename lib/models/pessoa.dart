@@ -3,13 +3,13 @@ import 'dart:math';
 class Pessoa {
   double peso;
   double altura;
-  static late double imc;
+  static late double indiceIMC;
 
   Pessoa({required this.peso, required this.altura});
 
   static double calcularIMC(double peso, double altura) {
-    imc = peso / (pow(altura, 2));
-    return imc;
+    indiceIMC = peso / (pow(altura, 2));
+    return indiceIMC;
   }
 
   static String classificaIMC(double IMC) {
