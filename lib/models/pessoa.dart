@@ -1,11 +1,15 @@
 import 'dart:math';
+import '../database/db.dart';
+import 'package:sqflite/sqflite.dart';
 
 class Pessoa {
-  double peso;
-  double altura;
+  late double peso;
+  late double altura;
   static late double indiceIMC;
 
-  Pessoa({required this.peso, required this.altura});
+  SQLiteDataBase pessoaDB = SQLiteDataBase();
+
+  Pessoa();
 
   static double calcularIMC(double peso, double altura) {
     indiceIMC = peso / (pow(altura, 2));
@@ -32,5 +36,11 @@ class Pessoa {
       resultado = "Obesidade Grau III(mórbida)";
     }
     return resultado;
+  }
+
+  // inserir dados no banco
+  Future inserirRegistro(
+      Database db, String tabela, Map<String, dynamic> valores) async {
+    await pessoaDB.inserirDados(db, tabela, valores);
   }
 }

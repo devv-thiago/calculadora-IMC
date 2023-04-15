@@ -23,7 +23,7 @@ class SQLiteDataBase {
   }
 
   Future<Database> iniciarBancoDeDados() async {
-    await WidgetsFlutterBinding.ensureInitialized();
+    WidgetsFlutterBinding.ensureInitialized();
     var db = await openDatabase(
         path.join(await getDatabasesPath(), 'database.db'),
         version: scripts.length, onCreate: (Database db, int version) async {
@@ -39,4 +39,10 @@ class SQLiteDataBase {
     });
     return db;
   }
+
+  // inserir dados no banco
+  Future<void> inserirDados(Database db, String tabela, Map<String, dynamic> valores) async {
+    await db.insert(tabela, valores, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
 }

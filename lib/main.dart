@@ -15,10 +15,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Pessoa usuario = Pessoa();
   TextEditingController pesoController = TextEditingController();
-
   TextEditingController alturaController = TextEditingController();
-
   late double peso = double.parse(pesoController.text);
   late double altura = double.parse(alturaController.text);
 
