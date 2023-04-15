@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
-Map<int, String> scripts = {
-  1: ''' CREATE TABLE registros_imc (
+class SQLiteDataBase {
+  Map<int, String> scripts = {
+    1: ''' CREATE TABLE registros_imc (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           peso REAL,
           altura REAL,
 					resultado TEXT
           );'''
-};
+  };
 
-class SQLiteDataBase {
   static Database? db;
 
   Future<Database> obterDataBase() async {
@@ -23,6 +23,7 @@ class SQLiteDataBase {
   }
 
   Future<Database> iniciarBancoDeDados() async {
+    await WidgetsFlutterBinding.ensureInitialized();
     var db = await openDatabase(
         path.join(await getDatabasesPath(), 'database.db'),
         version: scripts.length, onCreate: (Database db, int version) async {
