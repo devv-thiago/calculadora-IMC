@@ -3,6 +3,7 @@ import './database/db.dart';
 import 'models/pessoa.dart';
 
 void main() async {
+  await SQLiteDataBase().iniciarBancoDeDados();
   runApp(HomePage());
 }
 
@@ -20,8 +21,6 @@ class _HomePageState extends State<HomePage> {
 
   late double peso = double.parse(pesoController.text);
   late double altura = double.parse(alturaController.text);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +59,7 @@ class _HomePageState extends State<HomePage> {
                   height: 50,
                   width: 200,
                   child: ElevatedButton(
-                      onPressed: () {
-                        
-                      },
+                      onPressed: () {},
                       child: const Text(
                         'Calcular',
                         style: TextStyle(

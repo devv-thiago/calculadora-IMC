@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import '../lib/database/db.dart';
 import 'package:calculadora_imc/main.dart';
 
 void main() {

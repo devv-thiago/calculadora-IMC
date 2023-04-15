@@ -1,36 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
-import 'package:sqflite/sqflite.dart' as sqlite;
-import 'dart:async';
 
-import 'package:sqflite/sqlite_api.dart';
+Map<int, String> scripts = {
+  1: ''' CREATE TABLE registros_imc (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          peso REAL,
+          altura REAL,
+					resultado TEXT
+          );'''
+};
 
-class DatabaseManager {
-  // Classe de gerenciamento de banco de dados
-  late String databasePath;
-  late final String dbName;
+class SQLiteDataBase {
+  static Database? db;
 
-  DatabaseManager() {
-    getDefaultDatabasePath();
+  Future<Database> obterDataBase() async {
+    if (db == null) {
+      return await iniciarBancoDeDados();
+    } else {
+      return db!;
+    }
   }
 
-  Future getDefaultDatabasePath() async {
-    databasePath =
-        await sqlite.getDatabasesPath(); // Trás local padrão do database
-    dbName = path.join(databasePath, 'demo.db'); // Define nome do database
-    return dbName;
-  }
-
-// Cria database e tabela inicial
-  Future openDB() async {
-    var db = sqlite.openDatabase(dbName, version: 1,
-        onCreate: (Database db, int version) async {
-      await db.execute("""
-          CREATE TABLE Test (
-              id INTEGER PRIMARY KEY, 
-              name TEXT, 
-              value INTEGER, 
-              num REAL)
-        """);
+  Future<Database> iniciarBancoDeDados() async {
+    var db = await openDatabase(
+        path.join(await getDatabasesPath(), 'database.db'),
+        version: scripts.length, onCreate: (Database db, int version) async {
+      for (var i = 1; i <= scripts.length; i++) {
+        await db.execute(scripts[i]!);
+        debugPrint(scripts[i]!);
+      }
+    }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
+      for (var i = oldVersion + 1; i <= scripts.length; i++) {
+        await db.execute(scripts[i]!);
+        debugPrint(scripts[i]!);
+      }
     });
     return db;
   }
