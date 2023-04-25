@@ -1,46 +1,51 @@
 import 'dart:math';
+import 'package:calculadora_imc/models/calculadora_imc.dart';
+
 import '../database/db.dart';
 import 'package:sqflite/sqflite.dart';
 
-class Pessoa {
+class Pessoa implements CalculadoraIMC {
   late double peso;
   late double altura;
-  static late double indiceIMC;
+  late String resultado;
+  late double imc;
 
   SQLiteDataBase pessoaDB = SQLiteDataBase();
 
-  Pessoa();
-
-  static double calcularIMC(double peso, double altura) {
-    indiceIMC = peso / (pow(altura, 2));
-    return indiceIMC;
-  }
-
-  static String classificaIMC(double IMC) {
-    late String resultado;
-    if (IMC < 16) {
-      resultado = "Magreza Grave";
-    } else if (IMC < 17) {
-      resultado = "Magreza Moderada";
-    } else if (IMC < 18.5) {
-      resultado = "Magreza Leve";
-    } else if (IMC < 25) {
-      resultado = "Saudável";
-    } else if (IMC < 30) {
-      resultado = "Sobrepeso";
-    } else if (IMC < 35) {
-      resultado = "Obesidade Grau I";
-    } else if (IMC < 40) {
-      resultado = "Obesidade Grau II(severa)";
-    } else {
-      resultado = "Obesidade Grau III(mórbida)";
-    }
-    return resultado;
-  }
+  Pessoa(this.peso, this.altura);
 
   // inserir dados no banco
   Future inserirRegistro(
       Database db, String tabela, Map<String, dynamic> valores) async {
     await pessoaDB.inserirDados(db, tabela, valores);
+  }
+
+  // métodos classe calculadora
+  @override
+  double calcularIMC() {
+    imc = peso / (pow(altura, 2));
+    return imc;
+  }
+
+  @override
+  String classificaIMC(double imc) {
+    if (imc < 16) {
+      resultado = "Magreza Grave";
+    } else if (imc < 17) {
+      resultado = "Magreza Moderada";
+    } else if (imc < 18.5) {
+      resultado = "Magreza Leve";
+    } else if (imc < 25) {
+      resultado = "Saudável";
+    } else if (imc < 30) {
+      resultado = "Sobrepeso";
+    } else if (imc < 35) {
+      resultado = "Obesidade Grau I";
+    } else if (imc < 40) {
+      resultado = "Obesidade Grau II(severa)";
+    } else {
+      resultado = "Obesidade Grau III(mórbida)";
+    }
+    return resultado;
   }
 }

@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import './database/db.dart';
 import 'models/pessoa.dart';
 
-void main() async {
+void main() async{
   await SQLiteDataBase().iniciarBancoDeDados();
   runApp(HomePage());
 }
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
+  //Pessoa usuario = Pessoa(peso, altura);
 
-class _HomePageState extends State<HomePage> {
-  Pessoa usuario = Pessoa();
   TextEditingController pesoController = TextEditingController();
+
   TextEditingController alturaController = TextEditingController();
+
   late double peso = double.parse(pesoController.text);
+
   late double altura = double.parse(alturaController.text);
 
   @override
