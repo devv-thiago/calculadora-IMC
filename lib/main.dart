@@ -2,23 +2,16 @@ import 'package:flutter/material.dart';
 import './database/db.dart';
 import 'models/pessoa.dart';
 
-void main() async{
+void main() async {
   await SQLiteDataBase().iniciarBancoDeDados();
   runApp(HomePage());
 }
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
-
-  //Pessoa usuario = Pessoa(peso, altura);
-
   TextEditingController pesoController = TextEditingController();
-
   TextEditingController alturaController = TextEditingController();
-
-  late double peso = double.parse(pesoController.text);
-
-  late double altura = double.parse(alturaController.text);
+  late double peso;
+  late double altura;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +29,7 @@ class HomePage extends StatelessWidget {
             children: [
               TextField(
                 controller: pesoController,
+                onChanged: (value) => peso = double.parse(pesoController.text),
                 decoration: const InputDecoration(
                     label: Text('Peso'),
                     border: OutlineInputBorder(
@@ -46,6 +40,8 @@ class HomePage extends StatelessWidget {
               ),
               TextField(
                   controller: alturaController,
+                  onChanged: (value) =>
+                      altura = double.parse(alturaController.text),
                   decoration: const InputDecoration(
                       label: Text('Altura'),
                       border: OutlineInputBorder(
@@ -57,7 +53,11 @@ class HomePage extends StatelessWidget {
                   height: 50,
                   width: 200,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Pessoa usuario = Pessoa(peso, altura);
+                        double imc = usuario.calcularIMC();
+                        print(usuario.classificaIMC(imc));
+                      },
                       child: const Text(
                         'Calcular',
                         style: TextStyle(
