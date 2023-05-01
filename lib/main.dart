@@ -3,7 +3,8 @@ import './database/db.dart';
 import 'models/pessoa.dart';
 
 void main() async {
-  await SQLiteDataBase().iniciarBancoDeDados();
+  var db = SQLiteDataBase();
+  await db.obterDataBase();
   runApp(HomePage());
 }
 
@@ -53,10 +54,13 @@ class HomePage extends StatelessWidget {
                   height: 50,
                   width: 200,
                   child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         Pessoa usuario = Pessoa(peso, altura);
                         double imc = usuario.calcularIMC();
+                        String resultado = usuario.classificaIMC(imc);
                         print(usuario.classificaIMC(imc));
+                        usuario.inserirDados(
+                            'registros_imc', peso, altura, resultado);
                       },
                       child: const Text(
                         'Calcular',

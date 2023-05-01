@@ -4,7 +4,7 @@ import 'package:calculadora_imc/models/calculadora_imc.dart';
 import '../database/db.dart';
 import 'package:sqflite/sqflite.dart';
 
-class Pessoa implements CalculadoraIMC {
+class Pessoa implements CalculadoraIMC{
   late double peso;
   late double altura;
   late String resultado;
@@ -15,9 +15,8 @@ class Pessoa implements CalculadoraIMC {
   Pessoa(this.peso, this.altura);
 
   // inserir dados no banco
-  Future inserirRegistro(
-      Database db, String tabela, Map<String, dynamic> valores) async {
-    await pessoaDB.inserirDados(db, tabela, valores);
+  Future inserirDados(String tabela, double peso, double altura, String resultado) async {
+    pessoaDB.inserirDados('registros_imc', peso, altura, resultado);
   }
 
   // métodos classe calculadora
