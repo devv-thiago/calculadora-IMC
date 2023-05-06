@@ -1,42 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart' as path;
+import 'dart:math';
 
-class SQLiteDataBase {
-  late Database db;
-
-  SQLiteDataBase() {
+class DatabaseManager {
+  DatabaseManager() {
     WidgetsFlutterBinding.ensureInitialized();
-    _inicializarBancoDeDados();
+    criarBancoDeDados();
   }
 
-  Future<void> _inicializarBancoDeDados() async {
-    db = await openDatabase(path.join(await getDatabasesPath(), 'database.db'),
-        version: 1, onCreate: (Database db, int version) async {
-      await db.execute('''CREATE TABLE registros_imc (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          peso REAL,
-          altura REAL,
-          resultado TEXT
-        )''');
-    });
+  Future<Database> criarBancoDeDados() async {
+    final bancoDeDados = await openDatabase(
+      'database.db',
+      version: 1,
+      onCreate: (db, versao) async {
+        try {
+          await db.execute('''
+          CREATE TABLE historico (
+            id INTEGER PRIMARY KEY,
+            peso REAL,
+            altura REAL,
+            resultado TEXT
+          )
+        ''');
+        } catch (e) {
+          print('Excecao: $e');
+        }
+      },
+    );
+
+    return bancoDeDados;
   }
 
-  Future<Database> obterDataBase() async {
-    if (db == null) {
-      await _inicializarBancoDeDados();
+  inserirDados(double peso, double altura, String resultado) async {
+    final db = await criarBancoDeDados(); // retorna meu banco de dados
+    try {
+      var resultado = Random().nextInt(9000);
+      await db.insert('historico', {
+        'id': resultado,
+        'peso': peso,
+        'altura': altura,
+        'resultado': resultado
+      });
+    } catch (e) {
+      print('Excecao $e');
     }
-    return db;
   }
-
-  Future<void> inserirDados(
-      String tabela, double peso, double altura, String resultadoImc) async {
-    final db = await obterDataBase();
-    await db.rawInsert(
-        'INSERT INTO $tabela(peso, altura, resultado) VALUES (?, ?, ?)',
-        [peso, altura, resultadoImc]);
-  }
-  // metodo para exclusao de registros
-  
 }
-

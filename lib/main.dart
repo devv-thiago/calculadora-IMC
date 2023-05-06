@@ -1,18 +1,26 @@
+import 'package:calculadora_imc/pages/historico.dart';
+import 'package:calculadora_imc/pages/home.dart';
 import 'package:flutter/material.dart';
 import './database/db.dart';
-import 'models/pessoa.dart';
 
 void main() async {
-  var db = SQLiteDataBase();
-  await db.obterDataBase();
-  runApp(HomePage());
+  final db = DatabaseManager();
+  runApp(const HomePage());
 }
 
-class HomePage extends StatelessWidget {
-  TextEditingController pesoController = TextEditingController();
-  TextEditingController alturaController = TextEditingController();
-  late double peso;
-  late double altura;
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int indexPagina = 0;
+  List<Widget> paginas = [
+    const CalculadoraScreen(),
+    HistoricoScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -23,64 +31,25 @@ class HomePage extends StatelessWidget {
           title: const Center(child: Text('Calculadora de IMC')),
           backgroundColor: Colors.cyan,
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(right: 20, left: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                controller: pesoController,
-                onChanged: (value) => peso = double.parse(pesoController.text),
-                decoration: const InputDecoration(
-                    label: Text('Peso'),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(style: BorderStyle.solid))),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                  controller: alturaController,
-                  onChanged: (value) =>
-                      altura = double.parse(alturaController.text),
-                  decoration: const InputDecoration(
-                      label: Text('Altura'),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(style: BorderStyle.solid)))),
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                  height: 50,
-                  width: 200,
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        Pessoa usuario = Pessoa(peso, altura);
-                        double imc = usuario.calcularIMC();
-                        String resultado = usuario.classificaIMC(imc);
-                        print(usuario.classificaIMC(imc));
-                        usuario.inserirDados(
-                            'registros_imc', peso, altura, resultado);
-                      },
-                      child: const Text(
-                        'Calcular',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      )))
-            ],
-          ),
-        ),
-        bottomNavigationBar:
-            BottomNavigationBar(items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calculate), label: 'Calcular'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restore_rounded),
-            label: 'Histórico',
-          )
-        ]),
+        body: paginas[indexPagina],
+        bottomNavigationBar: BottomNavigationBar(
+            onTap: onTabTapped,
+            currentIndex: indexPagina,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.calculate), label: 'Calcular'),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.restore_rounded),
+                label: 'Histórico',
+              )
+            ]),
       ),
     );
+  }
+
+  void onTabTapped(int index) {
+    setState(() {
+      indexPagina = index;
+    });
   }
 }
