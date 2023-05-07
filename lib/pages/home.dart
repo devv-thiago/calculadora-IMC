@@ -2,20 +2,29 @@ import 'package:flutter/material.dart';
 import '../database/db.dart';
 import '../models/pessoa.dart';
 
-class CalculadoraScreen extends StatelessWidget {
+class CalculadoraScreen extends StatefulWidget {
   const CalculadoraScreen({super.key});
 
   @override
+  _CalculadoraScreenState createState() => _CalculadoraScreenState();
+}
+
+class _CalculadoraScreenState extends State<CalculadoraScreen> {
+  TextEditingController pesoController = TextEditingController();
+  TextEditingController alturaController = TextEditingController();
+  late double peso;
+  late double altura;
+  String resultado = '';
+  DatabaseManager database = DatabaseManager();
+
+  void resetResultado() {
+    setState(() {
+      resultado = '';
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TextEditingController pesoController = TextEditingController();
-
-    TextEditingController alturaController = TextEditingController();
-
-    late double peso;
-
-    late double altura;
-
-    DatabaseManager database = DatabaseManager();
     return Padding(
       padding: const EdgeInsets.only(right: 20, left: 20),
       child: Column(
@@ -46,21 +55,44 @@ class CalculadoraScreen extends StatelessWidget {
             height: 20,
           ),
           SizedBox(
-              height: 50,
-              width: 200,
-              child: ElevatedButton(
-                  onPressed: () async {
-                    Pessoa usuario = Pessoa(peso, altura);
-                    double imc = usuario.calcularIMC();
-                    String resultado = usuario.classificaIMC(imc);
-                    database.inserirDados(peso, altura, resultado);
-                  },
-                  child: const Text(
-                    'Calcular',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  )))
+            height: 50,
+            width: 200,
+            child: ElevatedButton(
+              onPressed: () async {
+                resetResultado();
+                Pessoa usuario = Pessoa(peso, altura);
+                double imc = usuario.calcularIMC();
+                resultado = usuario.classificaIMC(imc);
+                await database.inserirDados(peso, altura, resultado);
+                setState(() {});
+              },
+              child: const Text(
+                'Calcular',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.black)),
+            height: 80,
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: Text(
+              'Resultado: $resultado',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.green,
+                fontSize: 20,
+              ),
+            ),
+          )
         ],
       ),
     );

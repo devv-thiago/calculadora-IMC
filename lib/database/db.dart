@@ -34,15 +34,16 @@ class DatabaseManager {
   inserirDados(double peso, double altura, String resultado) async {
     final db = await criarBancoDeDados(); // retorna meu banco de dados
     try {
-      var resultado = Random().nextInt(9000);
-      await db.insert('historico', {
-        'id': resultado,
-        'peso': peso,
-        'altura': altura,
-        'resultado': resultado
-      });
+      var id = Random().nextInt(9000);
+      await db.insert('historico',
+          {'id': id, 'peso': peso, 'altura': altura, 'resultado': resultado});
     } catch (e) {
       print('Excecao $e');
     }
+  }
+
+  Future<List<Map<String, dynamic>>> obterDados() async {
+    final db = await criarBancoDeDados();
+    return await db.query('historico');
   }
 }

@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
       home: Scaffold(
         appBar: AppBar(
           title: const Center(child: Text('Calculadora de IMC')),
-          backgroundColor: Colors.cyan,
+          backgroundColor: Colors.black,
         ),
         body: paginas[indexPagina],
         bottomNavigationBar: BottomNavigationBar(
