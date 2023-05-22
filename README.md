@@ -1,16 +1,18 @@
-# calculadora_imc
+# Calculadora de IMC
 
-A new Flutter project.
+Este projeto tem como objetivo treinar a utilização de banco de dados SQLite. O objetivo é que a cada resultado da nossa calculadora de IMC, esse resultado pode ser visualizado pelo usuário.
 
-## Getting Started
+# Layout projeto
 
-This project is a starting point for a Flutter application.
+  <p align='center'>
+    <img src='https://github.com/devv-thiago/calculadora-IMC/assets/86129372/e7902e84-dd60-4e7e-a62a-001ecc6534bb'>
+    <img src='https://github.com/devv-thiago/calculadora-IMC/assets/86129372/34116cb9-89be-4414-a95e-84029c08ba13'>
+  </p>
 
-A few resources to get you started if this is your first Flutter project:
+# Bibliotecas
+1. SQFlite
+2. Dart:math
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Dificuldades
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+As dificuldades se traduziram na implementação do banco de dados, como foi a primeira vez que realizei a implementação de um banco de dados dentro de um aplicativo, tive algumas dificuldades com a documentação da biblioteca que em alguns pontos está desatualizada, mas após muita pesquisa consegui resolver os problemas que foram sendo apresentados
